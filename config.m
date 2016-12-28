@@ -11,9 +11,8 @@ opt.do_val = 1;
 opt.display.progress = 1;
 opt.display.visualize = 1;
 
-if opt.display.visualize
-    opt.output.acc_valid = [];
-    opt.output.acc_train = [];
-end
+opt.output.dir = './outputs/';
+opt.output.acc_valid = [];
+opt.output.acc_train = [];
 
 end

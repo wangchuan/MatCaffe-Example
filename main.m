@@ -1,4 +1,4 @@
-clear; clc;
+clear; clc; close all;
 
 addpath('/home/cwang/caffe/matlab/');
 addpath('./utils/');

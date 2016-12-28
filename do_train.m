@@ -13,6 +13,8 @@ for epoch = 1:max_epoches
     randidx = randperm(num_train_samples);
     data = dataset.data(:,:,:,randidx);
     labels = dataset.labels(randidx);
+    
+    acc_train = 0.0;
     for b = 1:num_batches
         s = (b - 1) * batch_size;
         batch = data(:,:,:,s+1:min(end,s+batch_size));
@@ -32,17 +34,21 @@ for epoch = 1:max_epoches
         if opt.display.progress
             progressbar((epoch-1+b/num_batches)/max_epoches,b/num_batches+0.001);
         end
+        
+        acc_train = acc_train + length(label) * solver.net.blobs('accuracy').get_data();
     end
+    acc_train = acc_train / num_train_samples;
+    opt.output.acc_train = [opt.output.acc_train, acc_train];
+    acc_valid = -1.0;
     
-    acc = -1.0;
     if opt.do_val
-        acc = do_validate(solver.test_nets, valid_dataset, opt);
+        acc_valid = do_validate(solver.test_nets, valid_dataset, opt);
+        opt.output.acc_valid = [opt.output.acc_valid, acc_valid];
     end
     if opt.display.visualize
-        opt.output.acc_valid = [opt.output.acc_valid, acc];
-        plot_acc_curve(opt.output.acc_valid);
+        plot_acc_curve(opt.output);
     end
-    fprintf('epoch: % 3d, acc: %3.4f\n', epoch, acc);
+    fprintf('epoch: % 3d, acc_valid: %3.4f, acc_train: %3.4f\n', epoch, acc_valid, acc_train);
 end
-
+solver.net.save(fullfile(opt.output.dir, 'final.caffemodel'));
 end
