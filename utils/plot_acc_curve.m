@@ -35,7 +35,7 @@ for i = 1:size(data,2)
     grid on
     hold on
 end
-legend(series(1:size(data,2)), 'Location', 'NorthEast');
+legend(series(1:size(data,2)), 'Location', 'SouthEast');
 
 if ~exist(output.dir, 'dir')
     mkdir(output.dir);

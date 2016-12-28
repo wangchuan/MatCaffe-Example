@@ -48,7 +48,8 @@ for epoch = 1:max_epoches
     if opt.display.visualize
         plot_acc_curve(opt.output);
     end
-    fprintf('epoch: % 3d, acc_valid: %3.4f, acc_train: %3.4f\n', epoch, acc_valid, acc_train);
+    fprintf('epoch: %03d, acc_valid: %3.2f%%, acc_train: %3.2f%%\n', ...
+        epoch, acc_valid*100.0, acc_train*100.0);
 end
 solver.net.save(fullfile(opt.output.dir, 'final.caffemodel'));
 end

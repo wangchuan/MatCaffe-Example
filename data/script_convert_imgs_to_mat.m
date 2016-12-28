@@ -1,3 +1,3 @@
 clear; clc;
-convert_imgs_to_mat('./train', './train.mat');
-convert_imgs_to_mat('./test', './test.mat');
+convert_imgs_to_mat('./cifar10/train', './cifar10/train.mat');
+convert_imgs_to_mat('./cifar10/test', './cifar10/test.mat');
