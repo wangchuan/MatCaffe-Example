@@ -13,7 +13,6 @@ for b = 1:num_batches
         batch = batch(:,:,[3,2,1],:);
     end
     label = reshape(label, [1,1,1,length(label)]);
-    batch = single(batch) / 255.0 - 0.5;
     label = single(label);
     net_input = {batch, label};
     caffe_net_reshape_as_input(net, net_input);

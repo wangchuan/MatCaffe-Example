@@ -18,7 +18,18 @@ function plot_acc_curve(output)
 % title('Trigonometric Functions')
 % xlabel('angle')
 % ylabel('sin(x) and cos(x)')
-figure(2);
+
+persistent acc_fig print_interval
+if ishandle(acc_fig)
+    figure(acc_fig);
+else
+    acc_fig = figure('Name', 'Acc Curve', 'NumberTitle', 'off');
+end
+if isempty(print_interval)
+    print_interval = 0;
+end
+print_interval = print_interval + 1;
+
 data = [output.acc_train, output.acc_valid];
 data = reshape(data, size(output.acc_train,2), []);
 
@@ -29,9 +40,12 @@ xlabel('Epoch');
 ylabel('Accuracy');
 
 series = {'Train Acc', 'Valid Acc'};
-colors = {'b-o', 'r-x'};
+markers = {'-o', '-x'};
+colors = [0.4,0.5,1.0;1.0,0.4,0.5];
+ax = gca; ax.GridLineStyle = '-.';
 for i = 1:size(data,2)
-    plot(1:size(data,1), data(:,i), colors{i}, 'LineWidth', 1.5); 
+    p = plot(1:size(data,1), data(:,i), markers{i}, 'LineWidth', 1.5);
+    set(p, 'Color', colors(i,:));
     grid on
     hold on
 end
@@ -40,8 +54,11 @@ legend(series(1:size(data,2)), 'Location', 'SouthEast');
 if ~exist(output.dir, 'dir')
     mkdir(output.dir);
 end
-print('-f2', fullfile(output.dir, 'Acc_Curve'),'-dpng');
-print('-f2', fullfile(output.dir, 'Acc_Curve'),'-depsc2');
-print('-f2', fullfile(output.dir, 'Acc_Curve'),'-dpdf');
 
+if ~mod(print_interval, 10)
+    print(acc_fig, fullfile(output.dir, 'Acc_Curve'),'-dpng');
+    print(acc_fig, fullfile(output.dir, 'Acc_Curve'),'-depsc2');
+    print(acc_fig, fullfile(output.dir, 'Acc_Curve'),'-dpdf');
+end
+drawnow;
 end
