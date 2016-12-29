@@ -10,8 +10,8 @@ if opt.display.progress
 end
 
 mean_img = mean(dataset.data, 4);
-dataset.data = bsxfun(@minus, single(dataset.data), mean_img) / 255.0;
-valid_dataset.data = bsxfun(@minus, single(valid_dataset.data), mean_img) / 255.0;
+dataset.data = bsxfun(@minus, single(dataset.data), mean_img);% / 255.0;
+valid_dataset.data = bsxfun(@minus, single(valid_dataset.data), mean_img);% / 255.0;
 
 for epoch = 1:max_epoches
     randidx = randperm(num_train_samples);
